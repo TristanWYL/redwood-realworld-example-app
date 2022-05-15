@@ -19,6 +19,7 @@ const Routes = () => {
         <Route path="/register" page={SignPage} name="register" />
         <Route path="/" page={HomePage} name="home" />
         <Route path="/settings" page={SettingPage} name="settings" />
+        <Route path="/profile" page={ProfilePage} name="profile" />
       </Set>
       <Set wrap={ArticlesLayout}>
         <Route path="/articles/new" page={ArticleNewArticlePage} name="newArticle" />

@@ -13,6 +13,7 @@ import ArticlesLayout from 'src/layouts/ArticlesLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/sign" page={SignPage} name="sign" />
       <Route path="/" page={HomePage} name="home" />
       <Set wrap={ArticlesLayout}>
         <Route path="/articles/new" page={ArticleNewArticlePage} name="newArticle" />

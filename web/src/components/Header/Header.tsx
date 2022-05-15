@@ -1,7 +1,7 @@
 import { Link, routes } from '@redwoodjs/router'
 import { useState } from 'react'
 
-const availableLinks = ['login', 'register', 'settings', '']
+const availableLinks = ['login', 'register', 'editor', 'settings', '']
 
 const Header = () => {
   let curLink = ''
@@ -29,9 +29,12 @@ const Header = () => {
             </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="">
+            <Link
+              className={(curLink === 'editor' ? 'active' : '') + ' nav-link'}
+              to={routes.editor()}
+            >
               <i className="ion-compose"></i>&nbsp;New Article
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
             <Link

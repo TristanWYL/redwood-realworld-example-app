@@ -19,7 +19,9 @@ const Routes = () => {
         <Route path="/register" page={SignPage} name="register" />
         <Route path="/" page={HomePage} name="home" />
         <Route path="/settings" page={SettingPage} name="settings" />
+        {/* needs authentication */}
         <Route path="/profile" page={ProfilePage} name="profile" />
+        <Route path="/editor" page={EditorPage} name="editor" />
       </Set>
       <Set wrap={ArticlesLayout}>
         <Route path="/articles/new" page={ArticleNewArticlePage} name="newArticle" />

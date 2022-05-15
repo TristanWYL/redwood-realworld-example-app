@@ -10,26 +10,40 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
+import slugify from 'slugify'
 
 const CREATE_ARTICLE = gql`
-  mutation CreateArticleMutation($input: CreateContactInput!) {
-    createContact(input: $input) {
+  mutation CreateArticleMutation($input: CreateArticleInput!) {
+    createArticle(input: $input) {
       id
     }
   }
 `
 
-const onSubmit = (input) => {
-  console.log(input)
-}
-
 const EditorPage = () => {
+  const formMethods = useForm()
+  const [create, { loading }] = useMutation(CREATE_ARTICLE, {
+    onCompleted: () => {
+      toast.success('Thank you for your article!')
+      formMethods.reset()
+    },
+  })
+  const onSubmit = (input) => {
+    input.authorId = 1
+    input.slug = `${slugify(input.title)}-${input.authorId}`
+    delete input.tagList
+    create({
+      variables: { input: input },
+    })
+    console.log(input)
+  }
   return (
     <div className="editor-page">
       <div className="container page">
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
-            <Form onSubmit={onSubmit}>
+            <Toaster />
+            <Form onSubmit={onSubmit} formMethods={formMethods}>
               <fieldset>
                 <fieldset className="form-group">
                   <TextField
@@ -75,7 +89,10 @@ const EditorPage = () => {
                   <div className="tag-list"></div>
                 </fieldset>
 
-                <Submit className="btn btn-lg pull-xs-right btn-primary">
+                <Submit
+                  disabled={loading}
+                  className="btn btn-lg pull-xs-right btn-primary"
+                >
                   Publish Article
                 </Submit>
               </fieldset>

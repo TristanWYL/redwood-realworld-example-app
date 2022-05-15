@@ -20879,6 +20879,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@redwoodjs/core": 1.3.3
+    slugify: ^1.6.5
   languageName: unknown
   linkType: soft
 
@@ -21513,6 +21514,13 @@ __metadata:
     astral-regex: ^2.0.0
     is-fullwidth-code-point: ^3.0.0
   checksum: 88083c9d0ca67d09f8b4c78f68833d69cabbb7236b74df5d741ad572bbf022deaf243fa54009cd434350622a1174ab267710fcc80a214ecc7689797fe00cb27c
+  languageName: node
+  linkType: hard
+
+"slugify@npm:^1.6.5":
+  version: 1.6.5
+  resolution: "slugify@npm:1.6.5"
+  checksum: 264059d9ea7aa95e472e66d19a1042ea54c75d3f60096c2cc57af4d66c6fb6ac1d8b4672326f276f52574fac489f59cb08848bfb97e44291c7e45211acb2b185
   languageName: node
   linkType: hard
 

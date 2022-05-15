@@ -1,9 +1,17 @@
 const Footer = () => {
   return (
-    <div>
-      <h2>{'Footer'}</h2>
-      <p>{'Find me in ./web/src/components/Footer/Footer.tsx'}</p>
-    </div>
+    <footer>
+      <div className="container">
+        <a href="/" className="logo-font">
+          conduit
+        </a>
+        <span className="attribution">
+          An interactive learning project from{' '}
+          <a href="https://thinkster.io">Thinkster</a>. Code &amp; design
+          licensed under MIT.
+        </span>
+      </div>
+    </footer>
   )
 }
 

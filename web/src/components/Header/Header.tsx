@@ -1,7 +1,7 @@
 import { Link, routes } from '@redwoodjs/router'
 import { useState } from 'react'
 
-const availableLinks = ['login', 'register', '']
+const availableLinks = ['login', 'register', 'settings', '']
 
 const Header = () => {
   let curLink = ''
@@ -34,9 +34,12 @@ const Header = () => {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="">
+            <Link
+              className={(curLink === 'settings' ? 'active' : '') + ' nav-link'}
+              to={routes.settings()}
+            >
               <i className="ion-gear-a"></i>&nbsp;Settings
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
             <Link

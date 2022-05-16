@@ -1,5 +1,4 @@
-import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import {
   Form,
@@ -19,10 +18,11 @@ const CREATE_USER = gql`
 `
 
 const SignPage = () => {
-  // const location = useLocation()
   const isSignInPage = window.location.href.includes('login')
   const [create, { loading, error }] = useMutation(CREATE_USER, {
-    onCompleted: () => {},
+    onCompleted: () => {
+      navigate(routes.home())
+    },
   })
   const onSubmit = (input) => {
     create({ variables: { input } })

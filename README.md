@@ -2,6 +2,8 @@
 
 This repository is created as part of [RealWorld](https://github.com/gothinkster/realworld) using [Redwood](https://redwoodjs.com/) which is an open-source, full-stack web framework.
 
+To keep the consistency of UI, this repository simply use the [template](https://realworld-docs.netlify.app/docs/specs/frontend-specs/templates/) of RealWorld, and the css framework keeps the same with this template: BootStrap 4.
+
 # How to run this repository
 
 > **Prerequisites**

@@ -22,13 +22,14 @@ const CREATE_ARTICLE = gql`
 
 const EditorPage = () => {
   const formMethods = useForm()
-  const [create, { loading }] = useMutation(CREATE_ARTICLE, {
+  const [create, { loading, error }] = useMutation(CREATE_ARTICLE, {
     onCompleted: () => {
       toast.success('Thank you for your article!')
       formMethods.reset()
     },
   })
   const onSubmit = (input) => {
+    // TODO: update the authorId here
     input.authorId = 1
     input.slug = `${slugify(input.title)}-${input.authorId}`
     delete input.tagList
@@ -43,7 +44,11 @@ const EditorPage = () => {
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
             <Toaster />
-            <Form onSubmit={onSubmit} formMethods={formMethods}>
+            <Form onSubmit={onSubmit} formMethods={formMethods} error={error}>
+              <FormError
+                error={error}
+                wrapperClassName="form-error rw-input-error"
+              />
               <fieldset>
                 <fieldset className="form-group">
                   <TextField

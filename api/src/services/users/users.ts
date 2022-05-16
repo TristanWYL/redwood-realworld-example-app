@@ -1,4 +1,5 @@
 import { db } from 'src/lib/db'
+import { validate } from '@redwoodjs/api'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -16,12 +17,14 @@ export const user: QueryResolvers['user'] = ({ id }) => {
 }
 
 export const createUser: MutationResolvers['createUser'] = ({ input }) => {
+  validate(input.email, 'email', { email: true })
   return db.user.create({
     data: input,
   })
 }
 
 export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {
+  validate(input.email, 'email', { email: true })
   return db.user.update({
     data: input,
     where: { id },

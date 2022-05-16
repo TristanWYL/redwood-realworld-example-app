@@ -54,7 +54,7 @@ const EditorPage = () => {
                   <TextField
                     name="title"
                     validation={{ required: true }}
-                    errorClassName="rw-input rw-input-error"
+                    errorClassName="form-control form-control-lg rw-input-error"
                     className="form-control form-control-lg"
                     placeholder="Article Title"
                   />
@@ -65,7 +65,7 @@ const EditorPage = () => {
                   <TextField
                     name="description"
                     validation={{ required: true }}
-                    errorClassName="rw-input rw-input-error"
+                    errorClassName="form-control form-control-lg rw-input-error"
                     className="form-control"
                     placeholder="What's this article about?"
                   />
@@ -76,7 +76,7 @@ const EditorPage = () => {
                   <TextAreaField
                     name="body"
                     validation={{ required: true }}
-                    errorClassName="rw-input rw-input-error"
+                    errorClassName="form-control form-control-lg rw-input-error"
                     className="form-control"
                     rows="8"
                     placeholder="Write your article (in markdown)"
@@ -89,7 +89,7 @@ const EditorPage = () => {
                     name="tagList"
                     className="form-control"
                     placeholder="Enter tags"
-                    errorClassName="rw-input rw-input-error"
+                    errorClassName="form-control form-control-lg rw-input-error"
                   />
                   <div className="tag-list"></div>
                 </fieldset>

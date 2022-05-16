@@ -11,7 +11,7 @@ const Header = () => {
       break
     }
   }
-  console.log(curLink)
+  // console.log(curLink)
   return (
     <nav className="navbar navbar-light">
       <div className="container">

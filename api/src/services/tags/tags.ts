@@ -5,8 +5,37 @@ import type {
   TagResolvers,
 } from 'types/graphql'
 
-export const tags: QueryResolvers['tags'] = () => {
-  return db.tag.findMany()
+export const tags = async (username?: string) => {
+  const queries = []
+
+  if (username) {
+    queries.push({
+      username: {
+        equals: username,
+      },
+    })
+  }
+
+  const tags = await db.tag.groupBy({
+    where: {
+      articles: {
+        some: {
+          author: {
+            OR: queries,
+          },
+        },
+      },
+    },
+    by: ['name'],
+    orderBy: {
+      _count: {
+        name: 'desc',
+      },
+    },
+    take: 10,
+  })
+
+  return tags.map((tag) => tag.name)
 }
 
 export const tag: QueryResolvers['tag'] = ({ id }) => {

@@ -11,6 +11,7 @@ import {
 import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import slugify from 'slugify'
+import { useState } from 'react'
 
 const CREATE_ARTICLE = gql`
   mutation CreateArticleMutation($input: CreateArticleInput!) {
@@ -22,17 +23,19 @@ const CREATE_ARTICLE = gql`
 
 const EditorPage = () => {
   const formMethods = useForm()
+  const [tagSet, setTagSet] = useState(new Set())
   const [create, { loading, error }] = useMutation(CREATE_ARTICLE, {
     onCompleted: () => {
       toast.success('Thank you for your article!')
       formMethods.reset()
+      setTagSet(new Set())
     },
   })
   const onSubmit = (input) => {
     // TODO: update the authorId here
     input.authorId = 1
     input.slug = `${slugify(input.title)}-${input.authorId}`
-    delete input.tagList
+    input.tagList = [...tagSet]
     create({
       variables: { input: input },
     })
@@ -44,7 +47,16 @@ const EditorPage = () => {
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
             <Toaster />
-            <Form onSubmit={onSubmit} formMethods={formMethods} error={error}>
+            <Form
+              onSubmit={onSubmit}
+              formMethods={formMethods}
+              error={error}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                }
+              }}
+            >
               <FormError
                 error={error}
                 wrapperClassName="form-error rw-input-error"
@@ -89,9 +101,30 @@ const EditorPage = () => {
                     name="tagList"
                     className="form-control"
                     placeholder="Enter tags"
-                    errorClassName="form-control form-control-lg rw-input-error"
+                    onKeyUp={(e) => {
+                      if (e.key === 'Enter') {
+                        setTagSet(new Set(tagSet.add(e.target.value)))
+                        e.target.value = ''
+                      }
+                    }}
                   />
-                  <div className="tag-list"></div>
+                  <div className="tag-list">
+                    {[...tagSet].map((tag) => (
+                      <span className="tag-default tag-pill" key={tag}>
+                        <i
+                          className="ion-close-round"
+                          onKeyUp={() => {}}
+                          role="link"
+                          tabIndex={0}
+                          onClick={() => {
+                            tagSet.delete(tag)
+                            setTagSet(new Set(tagSet))
+                          }}
+                        ></i>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </fieldset>
 
                 <Submit

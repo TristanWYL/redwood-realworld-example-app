@@ -14,15 +14,21 @@ export const schema = gql`
     comments: [Comment]!
   }
 
+  type ArticlePage {
+    articles: [Article!]!
+    count: Int!
+  }
+
   type Query {
     articles: [Article!]! @requireAuth
     article(id: Int!): Article @requireAuth
-    advancedQueryArticles(
+    articlePage(
       feed: Boolean
       tag: String
       username: String
       favorited: Boolean
-    ): [Article!]! @skipAuth
+      page: Int
+    ): ArticlePage! @skipAuth
   }
 
   input CreateArticleInput {

@@ -16,16 +16,36 @@ export const article: QueryResolvers['article'] = ({ id }) => {
 }
 
 // TODO: handle feed/favorited with authentication
-export const advancedQueryArticles = ({ feed, tag, username, favorited }) => {
-  const condition = { take: 10, where: {} }
+// @param: page starts from 1
+export const articlePage = async ({
+  feed,
+  tag,
+  username,
+  favorited,
+  page = 1,
+}) => {
+  const PAGE_SIZE = 5
+  const condition = { orderBy: { id: 'desc' }, where: {} }
   if (tag) {
     condition.where.tagList = { some: { name: tag } }
   }
   if (username) {
     condition.where.author = { username: username }
   }
-  console.log(condition)
-  return db.article.findMany(condition)
+  // for retrieving the count within one query here, we have to do the query this way
+  // refer to: https://github.com/prisma/prisma/discussions/3087#discussioncomment-2619461
+  // take: PAGE_SIZE
+  // skip: 0,
+  // if (page) {
+  //   condition.skip = (page - 1) * PAGE_SIZE
+  // }
+  let articles = await db.article.findMany(condition)
+  const count = articles.length
+  articles = articles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  return {
+    articles,
+    count,
+  }
 }
 
 export const createArticle: MutationResolvers['createArticle'] = ({

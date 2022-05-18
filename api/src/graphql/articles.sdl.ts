@@ -17,6 +17,12 @@ export const schema = gql`
   type Query {
     articles: [Article!]! @requireAuth
     article(id: Int!): Article @requireAuth
+    advancedQueryArticles(
+      feed: Boolean
+      tag: String
+      username: String
+      favorited: Boolean
+    ): [Article!]! @skipAuth
   }
 
   input CreateArticleInput {
@@ -25,6 +31,7 @@ export const schema = gql`
     description: String!
     body: String!
     authorId: Int!
+    tagList: [String]
   }
 
   input UpdateArticleInput {

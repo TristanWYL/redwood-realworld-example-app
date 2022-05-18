@@ -8,6 +8,7 @@ export const schema = gql`
   type Query {
     tags: [Tag!]! @requireAuth
     tag(id: Int!): Tag @requireAuth
+    topTags(username: String): [Tag!]! @skipAuth
   }
 
   input CreateTagInput {

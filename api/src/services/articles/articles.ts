@@ -15,9 +15,28 @@ export const article: QueryResolvers['article'] = ({ id }) => {
   })
 }
 
+// TODO: handle feed/favorited with authentication
+export const advancedQueryArticles = ({ feed, tag, username, favorited }) => {
+  const condition = { take: 10, where: {} }
+  if (tag) {
+    condition.where.tagList = { some: { name: tag } }
+  }
+  if (username) {
+    condition.where.author = { username: username }
+  }
+  console.log(condition)
+  return db.article.findMany(condition)
+}
+
 export const createArticle: MutationResolvers['createArticle'] = ({
   input,
 }) => {
+  input.tagList = {
+    connectOrCreate: input.tagList.map((tag: string) => ({
+      create: { name: tag },
+      where: { name: tag },
+    })),
+  }
   return db.article.create({
     data: input,
   })

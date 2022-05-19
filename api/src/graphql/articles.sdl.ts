@@ -11,6 +11,7 @@ export const schema = gql`
     author: User!
     authorId: Int!
     favoritedBy: [User]!
+    favoriteCount: Int!
     comments: [Comment]!
   }
 

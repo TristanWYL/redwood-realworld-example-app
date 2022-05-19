@@ -33,6 +33,7 @@ const QUERY = gql`
           username
           image
         }
+        favoriteCount
       }
       count
     }
@@ -69,12 +70,12 @@ const PostsPage = ({ page_number = 2, feed, tag, username, favorited }) => {
   ) {
     return <div style={{ padding: '30px' }}>No posts.</div>
   }
+  console.log(data)
   return (
     <>
       <ul>
         {data.posts.articles.map((article) => {
           return <PostCard key={article.id} article={article} />
-          return <li key={article.id}>{article.slug}</li>
         })}
       </ul>
       <Pagination

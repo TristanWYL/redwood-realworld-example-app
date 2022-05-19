@@ -23,25 +23,38 @@ export const articlePage = async ({
   username,
   favorited,
   page = 1,
+  needsFavoriteCount = true,
 }) => {
   const PAGE_SIZE = 5
-  const condition = { orderBy: { id: 'desc' }, where: {} }
+  const option = { orderBy: { id: 'desc' }, where: {} }
   if (tag) {
-    condition.where.tagList = { some: { name: tag } }
+    option.where.tagList = { some: { name: tag } }
   }
   if (username) {
-    condition.where.author = { username: username }
+    option.where.author = { username: username }
+  }
+  if (needsFavoriteCount) {
+    // refer: https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#count-relations
+    option.include = {
+      _count: {
+        select: { favoritedBy: true },
+      },
+    }
   }
   // for retrieving the count within one query here, we have to do the query this way
   // refer to: https://github.com/prisma/prisma/discussions/3087#discussioncomment-2619461
   // take: PAGE_SIZE
   // skip: 0,
   // if (page) {
-  //   condition.skip = (page - 1) * PAGE_SIZE
+  //   option.skip = (page - 1) * PAGE_SIZE
   // }
-  let articles = await db.article.findMany(condition)
+  let articles = await db.article.findMany(option)
   const count = articles.length
   articles = articles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  articles.forEach((a) => {
+    a.favoriteCount = a._count.favoritedBy
+  })
+  console.log(articles)
   return {
     articles,
     count,

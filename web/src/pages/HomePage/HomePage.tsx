@@ -39,7 +39,7 @@ const HomePage = () => {
               <div className="sidebar">
                 <p>Popular Tags</p>
                 <div className="tag-list">
-                  <TopTagsCell></TopTagsCell>
+                  <TopTagsCell />
                 </div>
               </div>
             </div>

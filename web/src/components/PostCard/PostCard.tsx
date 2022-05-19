@@ -13,8 +13,8 @@ const PostCard = ({ article }) => {
           </Link>
           <span className="date">{article.updatedAt}</span>
         </div>
-        <button className="btn btn-outline-primary btn-sm pull-xs-right">
-          <i className="ion-heart"></i> 29
+        <button className="btn active btn-outline-primary btn-sm pull-xs-right">
+          <i className="ion-heart"></i> {article.favoriteCount}
         </button>
       </div>
       <Link to={routes.article({ id: 1 })} className="preview-link">

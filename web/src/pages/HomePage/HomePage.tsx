@@ -65,7 +65,7 @@ const HomePage = () => {
                   )}
                 </ul>
               </div>
-              <PostsPage tag={tag} />
+              <PostsPage tag={curTab === 'tag' ? tag : undefined} />
             </div>
 
             <div className="col-md-3">

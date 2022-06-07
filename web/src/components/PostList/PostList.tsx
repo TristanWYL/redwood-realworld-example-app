@@ -40,7 +40,7 @@ const QUERY = gql`
   }
 `
 const PAGE_SIZE = 5
-const PostsPage = ({ page_number = 1, feed, tag, username, favorited }) => {
+const PostList = ({ page_number = 1, feed, tag, username, favorited }) => {
   const [page, setPage] = useState(page_number)
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
@@ -87,4 +87,4 @@ const PostsPage = ({ page_number = 1, feed, tag, username, favorited }) => {
   )
 }
 
-export default PostsPage
+export default PostList

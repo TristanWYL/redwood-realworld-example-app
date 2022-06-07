@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import PostsPage from './PostsPage'
+import PostList from './PostList'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('PostsPage', () => {
+describe('PostList', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<PostsPage />)
+      render(<PostList />)
     }).not.toThrow()
   })
 })

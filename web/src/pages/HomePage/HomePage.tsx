@@ -2,7 +2,7 @@ import { Link, routes } from '@redwoodjs/router'
 import { useQuery } from '@redwoodjs/web'
 import PostCard from 'src/components/PostCard/PostCard'
 import TopTagsCell from 'src/components/TopTagsCell'
-import PostsPage from 'src/components/PostsPage/PostsPage'
+import PostList from 'src/components/PostList/PostList'
 import store, { tabSwitch } from 'src/Store'
 import { useSelector } from 'react-redux'
 
@@ -65,7 +65,7 @@ const HomePage = () => {
                   )}
                 </ul>
               </div>
-              <PostsPage tag={curTab === 'tag' ? tag : undefined} />
+              <PostList tag={curTab === 'tag' ? tag : undefined} />
             </div>
 
             <div className="col-md-3">

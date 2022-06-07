@@ -15,6 +15,7 @@ const Routes = () => {
   return (
     <Router>
       <Set wrap={MainLayout}>
+        <Route path="/article/{slug:String}" page={PostPage} name="post" />
         <Route path="/login" page={SignPage} name="login" />
         <Route path="/register" page={SignPage} name="register" />
         <Route path="/" page={HomePage} name="home" />

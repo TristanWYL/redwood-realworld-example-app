@@ -15,6 +15,12 @@ export const article: QueryResolvers['article'] = ({ id }) => {
   })
 }
 
+export const queryArticleBySlug = ({ slug }) => {
+  return db.article.findUnique({
+    where: { slug },
+  })
+}
+
 // TODO: handle feed/favorited with authentication
 // @param: page starts from 1
 export const articlePage = async ({

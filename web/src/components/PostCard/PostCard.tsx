@@ -17,7 +17,7 @@ const PostCard = ({ article }) => {
           <i className="ion-heart"></i> {article.favoriteCount}
         </button>
       </div>
-      <Link to={routes.article({ id: 1 })} className="preview-link">
+      <Link to={routes.post({ slug: article.slug })} className="preview-link">
         <h1>{article.title}</h1>
         <p>{article.description}</p>
         <span>Read more...</span>

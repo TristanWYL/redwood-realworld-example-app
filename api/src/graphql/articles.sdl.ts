@@ -23,6 +23,7 @@ export const schema = gql`
   type Query {
     articles: [Article!]! @requireAuth
     article(id: Int!): Article @requireAuth
+    queryArticleBySlug(slug: String!): Article @skipAuth
     articlePage(
       feed: Boolean
       tag: String

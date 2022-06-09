@@ -9,6 +9,17 @@ export const comments: QueryResolvers['comments'] = () => {
   return db.comment.findMany()
 }
 
+export const getCommentsByArticleId = ({
+  articleId,
+}: {
+  articleId: number
+}) => {
+  console.log(articleId)
+  return db.comment.findMany({
+    where: { articleId },
+  })
+}
+
 export const comment: QueryResolvers['comment'] = ({ id }) => {
   return db.comment.findUnique({
     where: { id },

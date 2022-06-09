@@ -4,8 +4,8 @@ type ArticlePageProps = {
   id: number
 }
 
-const ArticlePage = ({ id }: ArticlePageProps) => {
+const ArticleList = ({ id }: ArticlePageProps) => {
   return <ArticleCell id={id} />
 }
 
-export default ArticlePage
+export default ArticleList

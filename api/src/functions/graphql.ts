@@ -12,6 +12,12 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
+  // cors: {
+  //   // 👈 setup your CORS configuration options
+  //   // ref: https://redwoodjs.com/docs/graphql#cors-configuration
+  //   origin: '*',
+  //   credentials: true,
+  // },
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()

@@ -15,15 +15,45 @@ export const article: QueryResolvers['article'] = ({ id }) => {
   })
 }
 
-export const queryArticleBySlug = ({ slug }) => {
-  return db.article.findUnique({
-    where: { slug },
-  })
+export const queryArticleBySlug = ({ slug, username }) => {
+  return db.article
+    .findUnique({
+      where: { slug },
+      include: {
+        author: {
+          select: {
+            username: true,
+            bio: true,
+            image: true,
+            followedBy: true,
+          },
+        },
+        favoritedBy: true,
+        _count: {
+          select: {
+            favoritedBy: true,
+          },
+        },
+      },
+    })
+    .then((result) => {
+      if (result) {
+        result.favoriteCount = result._count.favoritedBy
+        result.favoritedByMe = result.favoritedBy.some(
+          (item) => item.username === username
+        )
+        // TODO: Check whether 'favoritedByMe' and 'followedByMe' work
+        result.author.followedByMe = result.author.followedBy.some(
+          (item) => item.username === username
+        )
+      }
+      return result
+    })
 }
 
 // TODO: handle feed/favorited with authentication
 // @param: page starts from 1
-export const articlePage = async ({
+export const articleList = async ({
   feed,
   tag,
   username,
@@ -60,7 +90,7 @@ export const articlePage = async ({
   articles.forEach((a) => {
     a.favoriteCount = a._count.favoritedBy
   })
-  console.log(articles)
+  // console.log(articles)
   return {
     articles,
     count,

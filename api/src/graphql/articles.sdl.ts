@@ -12,10 +12,11 @@ export const schema = gql`
     authorId: Int!
     favoritedBy: [User]!
     favoriteCount: Int!
+    favoritedByMe: Boolean
     comments: [Comment]!
   }
 
-  type ArticlePage {
+  type ArticleList {
     articles: [Article!]!
     count: Int!
   }
@@ -24,13 +25,13 @@ export const schema = gql`
     articles: [Article!]! @requireAuth
     article(id: Int!): Article @requireAuth
     queryArticleBySlug(slug: String!): Article @skipAuth
-    articlePage(
+    articleList(
       feed: Boolean
       tag: String
       username: String
       favorited: Boolean
       page: Int
-    ): ArticlePage! @skipAuth
+    ): ArticleList! @skipAuth
   }
 
   input CreateArticleInput {

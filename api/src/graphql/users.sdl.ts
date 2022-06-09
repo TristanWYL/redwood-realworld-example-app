@@ -9,6 +9,7 @@ export const schema = gql`
     articles: [Article]!
     favorites: [Article]!
     followedBy: [User]!
+    followedByMe: Boolean
     following: [User]!
     comments: [Comment]!
   }

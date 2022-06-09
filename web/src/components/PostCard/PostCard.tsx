@@ -1,4 +1,5 @@
 import { Link, routes } from '@redwoodjs/router'
+import { dateFormat } from '../../../utils'
 
 const PostCard = ({ article }) => {
   return (
@@ -11,7 +12,7 @@ const PostCard = ({ article }) => {
           <Link to={routes.profile()} className="author">
             {article.author.username}
           </Link>
-          <span className="date">{article.updatedAt}</span>
+          <span className="date">{dateFormat(article.updatedAt)}</span>
         </div>
         <button className="btn active btn-outline-primary btn-sm pull-xs-right">
           <i className="ion-heart"></i> {article.favoriteCount}

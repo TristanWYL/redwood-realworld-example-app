@@ -11,7 +11,7 @@ const QUERY = gql`
     $favorited: Boolean
     $page: Int
   ) {
-    posts: articlePage(
+    posts: articleList(
       feed: $feed
       tag: $tag
       username: $username
@@ -70,14 +70,12 @@ const PostList = ({ page_number = 1, feed, tag, username, favorited }) => {
   ) {
     return <div style={{ padding: '30px' }}>No posts.</div>
   }
-  console.log(data)
+  // console.log(data)
   return (
     <>
-      <ul>
-        {data.posts.articles.map((article) => {
-          return <PostCard key={article.id} article={article} />
-        })}
-      </ul>
+      {data.posts.articles.map((article) => {
+        return <PostCard key={article.id} article={article} />
+      })}
       <Pagination
         setPage={setPage}
         page={page}

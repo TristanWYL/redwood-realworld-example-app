@@ -27,7 +27,7 @@ const HomePage = () => {
                   <li className="nav-item">
                     <div
                       className={
-                        (curTab === 'feed' ? 'active' : '') + ' nav-link'
+                        (curTab === 'feed' ? 'active ' : '') + 'nav-link'
                       }
                       tabIndex={0}
                       role="button"
@@ -44,7 +44,7 @@ const HomePage = () => {
                   <li className="nav-item">
                     <div
                       className={
-                        (curTab === 'global' ? 'active' : '') + ' nav-link'
+                        (curTab === 'global' ? 'active ' : '') + 'nav-link'
                       }
                       tabIndex={0}
                       role="button"

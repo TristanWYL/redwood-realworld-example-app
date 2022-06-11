@@ -1,5 +1,5 @@
 import { db } from 'src/lib/db'
-import { validate } from '@redwoodjs/api'
+import { validate, validateUniqueness } from '@redwoodjs/api'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -18,9 +18,21 @@ export const user: QueryResolvers['user'] = ({ id }) => {
 
 export const createUser: MutationResolvers['createUser'] = ({ input }) => {
   validate(input.email, 'email', { email: true })
-  return db.user.create({
-    data: input,
-  })
+  return validateUniqueness(
+    'user',
+    { email: input.email },
+    { message: 'Your email is already in use' },
+    (db) =>
+      validateUniqueness(
+        'user',
+        { username: input.username },
+        { message: 'Your username is already in use' },
+        (db) =>
+          db.user.create({
+            data: input,
+          })
+      )
+  )
 }
 
 export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {

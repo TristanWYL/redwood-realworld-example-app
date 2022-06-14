@@ -4,9 +4,11 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  binaryTargets   = "native"
-  previewFeatures = ["interactiveTransactions"]
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+  // Returning validateUniqueness doesn't return the actual result of the callback but throw
+  // : 'promises.map is not a function' instead if you don't enable
+  // previewFeatures = ["interactiveTransactions"]
 }
 
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`

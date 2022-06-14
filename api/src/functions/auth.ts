@@ -101,21 +101,21 @@ export const handler = async (event, context) => {
     //
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
-    handler: ({ username, hashedPassword, userAttributes }) => {
+    handler: async ({ username, hashedPassword, userAttributes }) => {
       const { email } = userAttributes
-      return validateUniqueness(
-        'user',
-        { email },
-        { message: 'Your email is already in use.' },
-        () =>
-          db.user.create({
-            data: {
-              email,
-              username,
-              password: hashedPassword,
-            },
-          })
-      )
+      const user = await db.user.findUnique({
+        where: { email },
+      })
+      if (user) {
+        throw new Error('Your email is already in use.')
+      }
+      return db.user.create({
+        data: {
+          email,
+          username,
+          password: hashedPassword,
+        },
+      })
     },
 
     errors: {

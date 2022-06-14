@@ -10,7 +10,7 @@ import {
 } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 import { useEffect, useState } from 'react'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 // const CREATE_USER = gql`
 //   mutation CreateUserMutation($input: CreateUserInput!) {
@@ -61,14 +61,11 @@ const SignPage = () => {
     }
     if (response.error) {
       toast.error(response.error)
-    } else {
-      toast.success(`Welcome, ${response.username}!`)
     }
     setLoading(false)
   }
   return (
     <div className="auth-page">
-      <Toaster toastOptions={{ className: 'rw-toast', duration: 3000 }} />
       <div className="container page">
         <div className="row">
           <div className="col-md-6 offset-md-3 col-xs-12">

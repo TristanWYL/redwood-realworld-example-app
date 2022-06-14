@@ -10,6 +10,7 @@ import './scaffold.css'
 import './index.css'
 import { Provider } from 'react-redux'
 import store from './Store'
+import { Toaster } from '@redwoodjs/web/toast'
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -17,6 +18,7 @@ const App = () => (
       <AuthProvider type="dbAuth">
         <RedwoodApolloProvider>
           <Provider store={store}>
+            <Toaster toastOptions={{ className: 'rw-toast', duration: 3000 }} />
             <Routes />
           </Provider>
         </RedwoodApolloProvider>

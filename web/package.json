@@ -13,6 +13,7 @@
     ]
   },
   "dependencies": {
+    "@redwoodjs/auth": "1.3.3",
     "@redwoodjs/forms": "1.3.3",
     "@redwoodjs/router": "1.3.3",
     "@redwoodjs/web": "1.3.3",

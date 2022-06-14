@@ -8,28 +8,67 @@ import {
   FormError,
   PasswordField,
 } from '@redwoodjs/forms'
+import { useAuth } from '@redwoodjs/auth'
+import { useEffect, useState } from 'react'
+import { toast, Toaster } from '@redwoodjs/web/toast'
 
-const CREATE_USER = gql`
-  mutation CreateUserMutation($input: CreateUserInput!) {
-    createUser(input: $input) {
-      id
-    }
-  }
-`
+// const CREATE_USER = gql`
+//   mutation CreateUserMutation($input: CreateUserInput!) {
+//     createUser(input: $input) {
+//       id
+//     }
+//   }
+// `
+
+const logIn = async (attributes) => {
+  const { email, password } = attributes
+  const response = await fetch(global.RWJS_API_DBAUTH_URL, {
+    credentials: 'same-origin',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      method: 'login',
+    }),
+  })
+  return await response.json()
+}
 
 const SignPage = () => {
   const isSignInPage = window.location.href.includes('login')
-  const [create, { loading, error }] = useMutation(CREATE_USER, {
-    onCompleted: () => {
-      navigate(routes.home())
-    },
-  })
-  const onSubmit = (input) => {
-    create({ variables: { input } })
-    console.log(input)
+  // const [create, { loading, error }] = useMutation(CREATE_USER, {
+  //   onCompleted: () => {
+  //     navigate(routes.home())
+  //   },
+  // })
+  const [loading, setLoading] = useState(false)
+  const { isAuthenticated, signUp, logOut } = useAuth()
+  useEffect(() => {
+    if (isAuthenticated) navigate(routes.home())
+  }, [isAuthenticated])
+  let error
+  const onSubmit = async (input) => {
+    // create({ variables: { input } })
+    setLoading(true)
+    let response
+    if (isSignInPage) {
+      response = await logIn(input)
+    } else {
+      response = await signUp(input)
+    }
+    if (response.error) {
+      toast.error(response.error)
+    } else {
+      toast.success(`Welcome, ${response.username}!`)
+    }
+    setLoading(false)
   }
   return (
     <div className="auth-page">
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 3000 }} />
       <div className="container page">
         <div className="row">
           <div className="col-md-6 offset-md-3 col-xs-12">

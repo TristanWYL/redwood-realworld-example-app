@@ -5,11 +5,14 @@ const PostCard = ({ article }) => {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <Link to={routes.profile()}>
+        <Link to={routes.profile({ username: article.author.username })}>
           <img src={article.author.image} alt="avatar" />
         </Link>
         <div className="info">
-          <Link to={routes.profile()} className="author">
+          <Link
+            to={routes.profile({ username: article.author.username })}
+            className="author"
+          >
             {article.author.username}
           </Link>
           <span className="date">{dateFormat(article.updatedAt)}</span>

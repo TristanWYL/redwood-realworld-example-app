@@ -1,5 +1,5 @@
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+// import { useMutation } from '@redwoodjs/web'
 import {
   Form,
   TextField,
@@ -20,34 +20,38 @@ import { toast } from '@redwoodjs/web/toast'
 //   }
 // `
 
-const logIn = async (attributes) => {
-  const { email, password } = attributes
-  const response = await fetch(global.RWJS_API_DBAUTH_URL, {
-    credentials: 'same-origin',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email,
-      password,
-      method: 'login',
-    }),
-  })
-  return await response.json()
-}
-
 const SignPage = () => {
+  const { isAuthenticated, signUp, reauthenticate, currentUser } = useAuth()
   const isSignInPage = window.location.href.includes('login')
+  const logIn = async (attributes) => {
+    const { email, password } = attributes
+    const response = await fetch(global.RWJS_API_DBAUTH_URL, {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        method: 'login',
+      }),
+    })
+    const logInResponse = await response.json()
+    reauthenticate()
+    return logInResponse
+  }
   // const [create, { loading, error }] = useMutation(CREATE_USER, {
   //   onCompleted: () => {
   //     navigate(routes.home())
   //   },
   // })
   const [loading, setLoading] = useState(false)
-  const { isAuthenticated, signUp, logOut } = useAuth()
   useEffect(() => {
-    if (isAuthenticated) navigate(routes.home())
+    if (isAuthenticated) {
+      toast.success(`Welcome, ${currentUser.username}!`)
+      navigate(routes.home())
+    }
   }, [isAuthenticated])
   let error
   const onSubmit = async (input) => {

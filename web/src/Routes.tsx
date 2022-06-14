@@ -18,12 +18,15 @@ const Routes = () => {
         <Route path="/" page={HomePage} name="home" />
         <Route path="/login" page={SignPage} name="login" />
         <Route path="/register" page={SignPage} name="register" />
-        <Route path="/settings" page={SettingPage} name="settings" />
-        <Route path="/profile" page={ProfilePage} name="profile" />
-        <Route path="/editor" page={EditorPage} name="editor" />
         <Route path="/article/{slug:String}" page={PostPage} name="post" />
-        {/* needs authentication */}
+        <Route path="/@{username:String}" page={ProfilePage} name="profile" />
       </Set>
+      <Private unauthenticated="home">
+        <Set wrap={MainLayout}>
+          <Route path="/editor" page={EditorPage} name="editor" />
+          <Route path="/settings" page={SettingPage} name="settings" />
+        </Set>
+      </Private>
       <Private unauthenticated="home">
         <Set wrap={ArticlesLayout}>
           <Route path="/admin/articles/new" page={ArticleNewArticlePage} name="newArticle" />

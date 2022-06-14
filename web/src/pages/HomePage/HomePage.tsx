@@ -1,14 +1,13 @@
-import { Link, routes } from '@redwoodjs/router'
-import { useQuery } from '@redwoodjs/web'
-import PostCard from 'src/components/PostCard/PostCard'
 import TopTagsCell from 'src/components/TopTagsCell'
 import PostList from 'src/components/PostList/PostList'
 import store, { tabSwitch } from 'src/Store'
 import { useSelector } from 'react-redux'
+import { useAuth } from '@redwoodjs/auth'
 
 const HomePage = () => {
   const curTab = useSelector((state) => state.selectedTab)
   const tag = useSelector((state) => state.tag)
+  const { isAuthenticated } = useAuth()
   return (
     <>
       <div className="home-page">
@@ -24,23 +23,25 @@ const HomePage = () => {
             <div className="col-md-9">
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
-                  <li className="nav-item">
-                    <div
-                      className={
-                        (curTab === 'feed' ? 'active ' : '') + 'nav-link'
-                      }
-                      tabIndex={0}
-                      role="button"
-                      onKeyUp={() => {}}
-                      onClick={() => {
-                        if (curTab !== 'feed') {
-                          store.dispatch(tabSwitch('feed', 'feed'))
+                  {isAuthenticated && (
+                    <li className="nav-item">
+                      <div
+                        className={
+                          (curTab === 'feed' ? 'active ' : '') + 'nav-link'
                         }
-                      }}
-                    >
-                      Your Feed
-                    </div>
-                  </li>
+                        tabIndex={0}
+                        role="button"
+                        onKeyUp={() => {}}
+                        onClick={() => {
+                          if (curTab !== 'feed') {
+                            store.dispatch(tabSwitch('feed', 'feed'))
+                          }
+                        }}
+                      >
+                        Your Feed
+                      </div>
+                    </li>
+                  )}
                   <li className="nav-item">
                     <div
                       className={

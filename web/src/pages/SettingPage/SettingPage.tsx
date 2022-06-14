@@ -1,7 +1,9 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+import { useAuth } from '@redwoodjs/auth'
 
 const SettingPage = () => {
+  const { logOut } = useAuth()
   return (
     <div className="settings-page">
       <div className="container page">
@@ -51,6 +53,10 @@ const SettingPage = () => {
                 </button>
               </fieldset>
             </form>
+            <hr />
+            <button className="btn btn-outline-danger" onClick={logOut}>
+              Or click here to logout.
+            </button>
           </div>
         </div>
       </div>

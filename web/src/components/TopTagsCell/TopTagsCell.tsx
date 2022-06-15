@@ -18,18 +18,22 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ topTags }: CellSuccessProps<TopTagsQuery>) => {
-  return topTags.map((item) => (
-    <div
-      onKeyDown={() => {}}
-      role="button"
-      tabIndex={0}
-      onClick={() => {
-        store.dispatch(tabSwitch('tag', item.name))
-      }}
-      className="tag-pill tag-default"
-      key={item.name}
-    >
-      {item.name}
-    </div>
-  ))
+  return (
+    <>
+      {topTags.map((item) => (
+        <div
+          onKeyDown={() => {}}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            store.dispatch(tabSwitch('tag', item.name))
+          }}
+          className="tag-pill tag-default"
+          key={item.name}
+        >
+          {item.name}
+        </div>
+      ))}
+    </>
+  )
 }

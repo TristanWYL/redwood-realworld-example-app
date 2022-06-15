@@ -25,7 +25,9 @@ yarn redwood dev
 
 Your browser should automatically open to http://localhost:8910.
 
+# Potential issues to be fixed
 
+- [ ] query for user(s) is marked as @requireAuth which means only authenticated users can access the query. However, what if an authenticated user queries other users' personal info? Is this possible?
 
 # About Redwood
 

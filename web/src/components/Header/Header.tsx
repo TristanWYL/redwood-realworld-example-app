@@ -83,9 +83,9 @@ const Header = () => {
             <li className="nav-item">
               <Link
                 className={(curLink === '@' ? 'active' : '') + ' nav-link'}
-                to={routes.profile({ username: currentUser.username })}
+                to={routes.profile({ username: currentUser?.username })}
               >
-                {currentUser.username}
+                {currentUser?.username}
               </Link>
             </li>
           )}

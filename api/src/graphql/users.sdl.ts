@@ -14,9 +14,24 @@ export const schema = gql`
     comments: [Comment]!
   }
 
+  type UserWithoutPrivacy {
+    id: Int!
+    email: String!
+    username: String!
+    image: String
+    bio: String
+    articles: [Article]!
+    favorites: [Article]!
+    followedBy: [User]!
+    followedByMe: Boolean
+    following: [User]!
+    comments: [Comment]!
+  }
+
   type Query {
     users: [User!]! @requireAuth
     user(id: Int!): User @requireAuth
+    userInfoWithoutPrivacy(username: String!): UserWithoutPrivacy @skipAuth
   }
 
   input CreateUserInput {
@@ -36,7 +51,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createUser(input: CreateUserInput!): User! @requireAuth
+    createUser(input: CreateUserInput!): User! @skipAuth
     updateUser(id: Int!, input: UpdateUserInput!): User! @requireAuth
     deleteUser(id: Int!): User! @requireAuth
   }

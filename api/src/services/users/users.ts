@@ -16,6 +16,12 @@ export const user: QueryResolvers['user'] = ({ id }) => {
   })
 }
 
+export const userInfoWithoutPrivacy = ({ username }) => {
+  return db.user.findUnique({
+    where: { username },
+  })
+}
+
 export const createUser: MutationResolvers['createUser'] = ({ input }) => {
   validate(input.email, 'email', { email: true })
   return validateUniqueness(

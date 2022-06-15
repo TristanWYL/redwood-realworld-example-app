@@ -22,8 +22,8 @@ export const schema = gql`
   }
 
   type Query {
-    articles: [Article!]! @requireAuth
-    article(id: Int!): Article @requireAuth
+    articles: [Article!]! @skipAuth
+    article(id: Int!): Article @skipAuth
     queryArticleBySlug(slug: String!): Article @skipAuth
     articleList(
       feed: Boolean
@@ -31,6 +31,7 @@ export const schema = gql`
       username: String
       favorited: Boolean
       page: Int
+      me: String
     ): ArticleList! @skipAuth
   }
 

@@ -51,32 +51,57 @@ export const queryArticleBySlug = ({ slug, username }) => {
     })
 }
 
-// TODO: handle feed/favorited with authentication
-// @param: page starts from 1
+const PAGE_SIZE = 5
+/**
+ * @param page
+ *    starts from 1
+ * @param username
+ *    whose posts shall be queried.
+ *    When used with favorited equal to 'true', username means of whom
+ *    the favorite posts should be returned.
+ *    When used with feed equal to 'true', username means this query should
+ *    return those articles of which the author is followed by 'username'
+ * @param me
+ *    Will be used to check whether each returned article is favorited by 'me'.
+ *    Here 'me' represents the 'username' of User
+ */
 export const articleList = async ({
   feed,
   tag,
   username,
   favorited,
   page = 1,
-  needsFavoriteCount = true,
+  me,
 }) => {
-  const PAGE_SIZE = 5
   const option = { orderBy: { id: 'desc' }, where: {} }
   if (tag) {
     option.where.tagList = { some: { name: tag } }
   }
-  if (username) {
+  if (favorited || feed) {
+    if (favorited) {
+      if (!username) throw new Error("Argument 'username' is missed!")
+      if (feed) throw new Error("Argument 'feed' collides with 'favorited'!")
+      option.where.favoritedBy = { some: { username } }
+    }
+    if (feed) {
+      if (!username) throw new Error("Argument 'username' is missed!")
+      if (favorited)
+        throw new Error("Argument 'feed' collides with 'favorited'!")
+      option.where.author = { followedBy: { some: { username } } }
+    }
+  } else if (username) {
     option.where.author = { username: username }
   }
-  if (needsFavoriteCount) {
-    // refer: https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#count-relations
-    option.include = {
-      _count: {
-        select: { favoritedBy: true },
-      },
-    }
+  const count = await db.article.count({
+    where: option.where,
+  })
+  // refer: https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#count-relations
+  option.include = {
+    _count: {
+      select: { favoritedBy: true },
+    },
   }
+
   // for retrieving the count within one query here, we have to do the query this way
   // refer to: https://github.com/prisma/prisma/discussions/3087#discussioncomment-2619461
   // take: PAGE_SIZE
@@ -84,12 +109,18 @@ export const articleList = async ({
   // if (page) {
   //   option.skip = (page - 1) * PAGE_SIZE
   // }
-  let articles = await db.article.findMany(option)
-  const count = articles.length
-  articles = articles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  // do pagination here
+  option.take = PAGE_SIZE
+  option.skip = (page - 1) * PAGE_SIZE
+  const articles = await db.article.findMany(option)
   articles.forEach((a) => {
     a.favoriteCount = a._count.favoritedBy
   })
+  if (me) {
+    articles.forEach((a) => {
+      a.favoritedByMe = a.favoritedBy.some((item) => item.username === me)
+    })
+  }
   // console.log(articles)
   return {
     articles,

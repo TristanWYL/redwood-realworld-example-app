@@ -10,6 +10,7 @@ const QUERY = gql`
     $username: String
     $favorited: Boolean
     $page: Int
+    $me: String
   ) {
     posts: articleList(
       feed: $feed
@@ -17,6 +18,7 @@ const QUERY = gql`
       username: $username
       favorited: $favorited
       page: $page
+      me: $me
     ) {
       articles {
         id
@@ -34,13 +36,27 @@ const QUERY = gql`
           image
         }
         favoriteCount
+        favoritedByMe
       }
       count
     }
   }
 `
 const PAGE_SIZE = 5
-const PostList = ({ page_number = 1, feed, tag, username, favorited }) => {
+type PostListProps = {
+  page_number?: number
+  feed?: boolean
+  tag?: string
+  username?: string
+  favorited?: boolean
+}
+const PostList = ({
+  page_number = 1,
+  feed,
+  tag,
+  username,
+  favorited,
+}: PostListProps) => {
   const [page, setPage] = useState(page_number)
   const { loading, error, data } = useQuery(QUERY, {
     variables: {

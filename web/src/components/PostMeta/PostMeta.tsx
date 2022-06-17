@@ -1,25 +1,99 @@
 import { dateFormat } from '../../../utils'
+import { Link, routes, navigate } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+import { useMutation } from '@redwoodjs/web'
+import { TOGGLE_FAVORITE, TOGGLE_FOLLOW } from 'src/misc/shared'
+import { toast } from '@redwoodjs/web/toast'
 
 const PostMeta = ({ post }) => {
+  const { isAuthenticated, currentUser } = useAuth()
+  const [changeFavorite, { loading: loadingWhenUpdateFavorite }] = useMutation(
+    TOGGLE_FAVORITE,
+    {
+      onError(error) {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  const [changeFollow, { loading: loadingWhenUpdateFollow }] = useMutation(
+    TOGGLE_FOLLOW,
+    {
+      onError(error) {
+        toast.error(error.message)
+      },
+    }
+  )
   return (
     <div className="article-meta">
-      <a href="">
+      <Link to={routes.profile({ username: post.author.username })}>
         <img src={post.author.image} alt="avatar" />
-      </a>
+      </Link>
       <div className="info">
-        <a href="" className="author">
+        <Link
+          to={routes.profile({ username: post.author.username })}
+          className="author"
+        >
           {post.author.username}
-        </a>
+        </Link>
         <span className="date">{dateFormat(post.updatedAt)}</span>
       </div>
-      <button className="btn btn-sm btn-outline-secondary">
+      <button
+        className={
+          (post.author.followedByMe ? 'btn-primary ' : 'btn-outline-primary ') +
+          (loadingWhenUpdateFollow ? 'disabled ' : '') +
+          'btn btn-sm'
+        }
+        onClick={async () => {
+          if (isAuthenticated) {
+            if (!loadingWhenUpdateFollow) {
+              // [un]favorite
+              const response = await changeFollow({
+                variables: {
+                  username: post.author.username,
+                  me: currentUser.username,
+                  follow: !post.author.followedByMe,
+                },
+              })
+              // article = response.data.changeFavorite
+            }
+          } else {
+            navigate(routes.register())
+          }
+        }}
+      >
         <i className="ion-plus-round"></i>
-        &nbsp; Follow Eric Simons <span className="counter">(10)</span>
+        &nbsp; {`Follow ${post.author.username}`}{' '}
+        {/* <span className="counter">(10)</span> */}
       </button>
       &nbsp;&nbsp;
-      <button className="btn btn-sm btn-outline-primary">
+      <button
+        className={
+          (post.favoritedByMe ? 'btn-primary ' : 'btn-outline-primary ') +
+          (loadingWhenUpdateFavorite ? 'disabled ' : '') +
+          'btn btn-sm'
+        }
+        onClick={async () => {
+          if (isAuthenticated) {
+            if (!loadingWhenUpdateFavorite) {
+              // [un]favorite
+              const response = await changeFavorite({
+                variables: {
+                  username: currentUser.username,
+                  slug: post.slug,
+                  favorite: !post.favoritedByMe,
+                },
+              })
+              // article = response.data.changeFavorite
+            }
+          } else {
+            navigate(routes.register())
+          }
+        }}
+      >
         <i className="ion-heart"></i>
-        &nbsp; Favorite Post <span className="counter">(29)</span>
+        &nbsp; Favorite Article
+        <span className="counter">{` (${post.favoriteCount})`}</span>
       </button>
     </div>
   )

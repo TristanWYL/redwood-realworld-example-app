@@ -55,6 +55,24 @@ export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
   })
 }
 
+export const changeFollow = ({ username, me, followw }) => {
+  const optionFollowedBy = followw
+    ? { connect: { username: me } }
+    : { disconnect: { username: me } }
+  return db.user
+    .update({
+      where: { username },
+      data: { followedBy: optionFollowedBy },
+      include: { followedBy: { select: { username: true } } },
+    })
+    .then((user) => {
+      user.followedByMe = me
+        ? user.followedBy.some((item) => item.username === me)
+        : false
+      return user
+    })
+}
+
 export const User: UserResolvers = {
   articles: (_obj, { root }) =>
     db.user.findUnique({ where: { id: root.id } }).articles(),

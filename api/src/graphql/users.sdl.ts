@@ -31,6 +31,7 @@ export const schema = gql`
   type Query {
     users: [User!]! @requireAuth
     user(id: Int!): User @requireAuth
+    userRelation(username: String!, me: String!): User @skipAuth
     userInfoWithoutPrivacy(username: String!): UserWithoutPrivacy @skipAuth
   }
 

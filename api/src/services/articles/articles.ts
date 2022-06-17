@@ -47,7 +47,7 @@ export const queryArticleBySlug = ({ slug, me }) => {
           ? result.author.followedBy.some((item) => item.username === me)
           : false
       }
-      console.log(result)
+      // console.log(result)
       return result
     })
 }

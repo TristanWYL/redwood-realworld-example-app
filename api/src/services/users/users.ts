@@ -16,6 +16,27 @@ export const user: QueryResolvers['user'] = ({ id }) => {
   })
 }
 
+export const userRelation = ({ username, me }) => {
+  return db.user
+    .findUnique({
+      where: { username },
+      include: {
+        followedBy: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    })
+    .then((user) => {
+      if (user) {
+        user.followedByMe = user.followedBy.some((item) => item.username === me)
+      }
+      return user
+    })
+}
+
 export const userInfoWithoutPrivacy = ({ username }) => {
   return db.user.findUnique({
     where: { username },
@@ -55,8 +76,8 @@ export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
   })
 }
 
-export const changeFollow = ({ username, me, followw }) => {
-  const optionFollowedBy = followw
+export const changeFollow = ({ username, me, follow }) => {
+  const optionFollowedBy = follow
     ? { connect: { username: me } }
     : { disconnect: { username: me } }
   return db.user

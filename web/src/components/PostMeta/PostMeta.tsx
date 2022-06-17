@@ -1,7 +1,7 @@
 import { dateFormat } from '../../../utils'
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { TOGGLE_FAVORITE, TOGGLE_FOLLOW } from 'src/misc/shared'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -24,6 +24,27 @@ const PostMeta = ({ post }) => {
       },
     }
   )
+
+  // for working around the issue mentioned in https://github.com/TristanWYL/redwood-realworld-example-app/commit/744fb6ee37ff4121d91b49e7f86e7077f608ee36
+  // useQuery is applied specifically for retrieving the 'followedByMe'
+  const QUERY = gql`
+    query FollowedByMe($username: String!, $me: String!) {
+      userRelation(username: $username, me: $me) {
+        id
+        followedByMe
+      }
+    }
+  `
+  const {
+    loading,
+    error,
+    data: queryFollowedByMeResult,
+  } = useQuery(QUERY, {
+    variables: {
+      username: post.author.username,
+      me: currentUser?.username,
+    },
+  })
   return (
     <div className="article-meta">
       <Link to={routes.profile({ username: post.author.username })}>
@@ -40,7 +61,9 @@ const PostMeta = ({ post }) => {
       </div>
       <button
         className={
-          (post.author.followedByMe ? 'btn-primary ' : 'btn-outline-primary ') +
+          (queryFollowedByMeResult?.userRelation?.followedByMe
+            ? 'btn-primary '
+            : 'btn-outline-primary ') +
           (loadingWhenUpdateFollow ? 'disabled ' : '') +
           'btn btn-sm'
         }

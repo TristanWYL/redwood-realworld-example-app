@@ -7,7 +7,7 @@ import { useAuth } from '@redwoodjs/auth'
 const HomePage = () => {
   const curTab = useSelector((state) => state.selectedTab)
   const tag = useSelector((state) => state.tag)
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, currentUser } = useAuth()
   return (
     <>
       <div className="home-page">
@@ -66,7 +66,10 @@ const HomePage = () => {
                   )}
                 </ul>
               </div>
-              <PostList tag={curTab === 'tag' ? tag : undefined} />
+              <PostList
+                tag={curTab === 'tag' ? tag : undefined}
+                me={currentUser?.username}
+              />
             </div>
 
             <div className="col-md-3">

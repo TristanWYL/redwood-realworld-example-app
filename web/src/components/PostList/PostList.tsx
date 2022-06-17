@@ -49,6 +49,7 @@ type PostListProps = {
   tag?: string
   username?: string
   favorited?: boolean
+  me?: string
 }
 const PostList = ({
   page_number = 1,
@@ -56,6 +57,7 @@ const PostList = ({
   tag,
   username,
   favorited,
+  me,
 }: PostListProps) => {
   const [page, setPage] = useState(page_number)
   const { loading, error, data } = useQuery(QUERY, {
@@ -65,6 +67,7 @@ const PostList = ({
       tag,
       username,
       favorited,
+      me,
     },
   })
 
@@ -89,8 +92,8 @@ const PostList = ({
   // console.log(data)
   return (
     <>
-      {data.posts.articles.map((article) => {
-        return <PostCard key={article.id} article={article} />
+      {data.posts.articles.map((post) => {
+        return <PostCard key={post.id} post={post} />
       })}
       <Pagination
         setPage={setPage}

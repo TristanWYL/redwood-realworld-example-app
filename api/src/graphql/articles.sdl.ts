@@ -24,7 +24,7 @@ export const schema = gql`
   type Query {
     articles: [Article!]! @skipAuth
     article(id: Int!): Article @skipAuth
-    queryArticleBySlug(slug: String!): Article @skipAuth
+    queryArticleBySlug(slug: String!, me: String): Article @skipAuth
     articleList(
       feed: Boolean
       tag: String
@@ -56,5 +56,10 @@ export const schema = gql`
     createArticle(input: CreateArticleInput!): Article! @requireAuth
     updateArticle(id: Int!, input: UpdateArticleInput!): Article! @requireAuth
     deleteArticle(id: Int!): Article! @requireAuth
+    changeFavorite(
+      username: String!
+      slug: String!
+      favorite: Boolean!
+    ): Article! @requireAuth
   }
 `

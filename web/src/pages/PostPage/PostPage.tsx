@@ -1,12 +1,10 @@
-import { Link, routes } from '@redwoodjs/router'
 import { useQuery } from '@redwoodjs/web'
-import CommentList from 'src/components/CommentList/CommentList'
-import CommentSubmitBox from 'src/components/CommentSubmitBox/CommentSubmitBox'
 import FullPost from 'src/components/FullPost/FullPost'
+import { useAuth } from '@redwoodjs/auth'
 
 const QUERY = gql`
-  query FindPostBySlug($slug: String!) {
-    post: queryArticleBySlug(slug: $slug) {
+  query FindPostBySlug($slug: String!, $me: String) {
+    post: queryArticleBySlug(slug: $slug, me: $me) {
       id
       slug
       title
@@ -28,9 +26,11 @@ const QUERY = gql`
   }
 `
 const PostPage = ({ slug }) => {
+  const { currentUser } = useAuth()
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
       slug,
+      me: currentUser?.username,
     },
   })
   if (loading) {

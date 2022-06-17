@@ -15,13 +15,14 @@ export const article: QueryResolvers['article'] = ({ id }) => {
   })
 }
 
-export const queryArticleBySlug = ({ slug, username }) => {
+export const queryArticleBySlug = ({ slug, me }) => {
   return db.article
     .findUnique({
       where: { slug },
       include: {
         author: {
           select: {
+            id: true,
             username: true,
             bio: true,
             image: true,
@@ -39,14 +40,14 @@ export const queryArticleBySlug = ({ slug, username }) => {
     .then((result) => {
       if (result) {
         result.favoriteCount = result._count.favoritedBy
-        result.favoritedByMe = result.favoritedBy.some(
-          (item) => item.username === username
-        )
-        // TODO: Check whether 'favoritedByMe' and 'followedByMe' work
-        result.author.followedByMe = result.author.followedBy.some(
-          (item) => item.username === username
-        )
+        result.favoritedByMe = me
+          ? result.favoritedBy.some((item) => item.username === me)
+          : false
+        result.author.followedByMe = me
+          ? result.author.followedBy.some((item) => item.username === me)
+          : false
       }
+      console.log(result)
       return result
     })
 }
@@ -100,6 +101,9 @@ export const articleList = async ({
     _count: {
       select: { favoritedBy: true },
     },
+    favoritedBy: {
+      select: { username: true },
+    },
   }
 
   // for retrieving the count within one query here, we have to do the query this way
@@ -118,7 +122,7 @@ export const articleList = async ({
   })
   if (me) {
     articles.forEach((a) => {
-      a.favoritedByMe = a.favoritedBy.some((item) => item.username === me)
+      a.favoritedByMe = a.favoritedBy?.some((item) => item.username === me)
     })
   }
   // console.log(articles)
@@ -156,6 +160,46 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = ({ id }) => {
   return db.article.delete({
     where: { id },
   })
+}
+
+export const changeFavorite = async ({ username, slug, favorite }) => {
+  const optionFavoritedBy = favorite
+    ? { connect: { username } }
+    : { disconnect: { username } }
+  const { _count, ...article } = await db.article.update({
+    where: { slug },
+    data: {
+      favoritedBy: optionFavoritedBy,
+    },
+    include: {
+      tagList: {
+        select: {
+          name: true,
+        },
+      },
+      author: {
+        select: {
+          username: true,
+          bio: true,
+          image: true,
+          followedBy: true,
+        },
+      },
+      favoritedBy: true,
+      _count: {
+        select: {
+          favoritedBy: true,
+        },
+      },
+    },
+  })
+  return {
+    ...article,
+    favoriteCount: _count?.favoritedBy,
+    favoritedByMe: article.favoritedBy.some(
+      (favorited) => favorited.username === username
+    ),
+  }
 }
 
 export const Article: ArticleResolvers = {

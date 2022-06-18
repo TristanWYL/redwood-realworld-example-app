@@ -66,7 +66,17 @@ const HomePage = () => {
                   )}
                 </ul>
               </div>
-              <PostList tag={curTab === 'tag' ? tag : undefined} />
+              <PostList
+                tag={curTab === 'tag' ? tag : undefined}
+                feed={curTab === 'feed'}
+                username={
+                  curTab === 'global'
+                    ? undefined
+                    : curTab === 'feed'
+                    ? currentUser?.username
+                    : undefined
+                }
+              />
             </div>
 
             <div className="col-md-3">

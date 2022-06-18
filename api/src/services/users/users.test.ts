@@ -37,7 +37,6 @@ describe('users', () => {
   scenario('updates a user', async (scenario: StandardScenario) => {
     const original = await user({ id: scenario.user.one.id })
     const result = await updateUser({
-      id: original.id,
       input: { email: 'String23858202' },
     })
 

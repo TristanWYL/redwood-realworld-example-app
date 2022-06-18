@@ -1,5 +1,5 @@
 import { db } from 'src/lib/db'
-import { DbAuthHandler, validateUniqueness } from '@redwoodjs/api'
+import { DbAuthHandler } from '@redwoodjs/api'
 
 export const handler = async (event, context) => {
   const forgotPasswordOptions = {

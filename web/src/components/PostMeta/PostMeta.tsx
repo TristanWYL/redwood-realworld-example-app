@@ -35,11 +35,7 @@ const PostMeta = ({ post }) => {
       }
     }
   `
-  const {
-    loading,
-    error,
-    data: queryFollowedByMeResult,
-  } = useQuery(QUERY, {
+  const { data: queryFollowedByMeResult } = useQuery(QUERY, {
     variables: {
       username: post.author.username,
     },
@@ -61,8 +57,8 @@ const PostMeta = ({ post }) => {
       <button
         className={
           (queryFollowedByMeResult?.userRelation?.followedByMe
-            ? 'btn-primary '
-            : 'btn-outline-primary ') +
+            ? 'btn-secondary '
+            : 'btn-outline-secondary ') +
           (loadingWhenUpdateFollow ? 'disabled ' : '') +
           'btn btn-sm'
         }
@@ -73,7 +69,7 @@ const PostMeta = ({ post }) => {
               const response = await changeFollow({
                 variables: {
                   username: post.author.username,
-                  follow: !post.author.followedByMe,
+                  follow: !queryFollowedByMeResult?.userRelation?.followedByMe,
                 },
               })
               // article = response.data.changeFavorite
@@ -84,7 +80,10 @@ const PostMeta = ({ post }) => {
         }}
       >
         <i className="ion-plus-round"></i>
-        &nbsp; {`Follow ${post.author.username}`}{' '}
+        &nbsp;{' '}
+        {(queryFollowedByMeResult?.userRelation?.followedByMe
+          ? 'Unfollow'
+          : 'Follow') + post.author.username}{' '}
         {/* <span className="counter">(10)</span> */}
       </button>
       &nbsp;&nbsp;

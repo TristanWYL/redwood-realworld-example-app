@@ -1,5 +1,4 @@
 import { Link, routes } from '@redwoodjs/router'
-import { useState } from 'react'
 import { useAuth } from '@redwoodjs/auth'
 
 const availableLinks = ['login', 'register', 'editor', 'settings', '@']
@@ -83,7 +82,7 @@ const Header = () => {
             <li className="nav-item">
               <Link
                 className={(curLink === '@' ? 'active' : '') + ' nav-link'}
-                to={routes.profile({ username: currentUser?.username })}
+                to={routes.profile({ username: currentUser?.username ?? '' })}
               >
                 {currentUser?.username}
               </Link>

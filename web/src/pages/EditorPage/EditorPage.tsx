@@ -12,6 +12,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import slugify from 'slugify'
 import { useState } from 'react'
+import { useAuth } from '@redwoodjs/auth'
 
 const CREATE_ARTICLE = gql`
   mutation CreateArticleMutation($input: CreateArticleInput!) {
@@ -23,6 +24,7 @@ const CREATE_ARTICLE = gql`
 
 const EditorPage = () => {
   const formMethods = useForm()
+  const { currentUser } = useAuth()
   const [tagSet, setTagSet] = useState(new Set())
   const [create, { loading, error }] = useMutation(CREATE_ARTICLE, {
     onCompleted: () => {
@@ -32,8 +34,7 @@ const EditorPage = () => {
     },
   })
   const onSubmit = (input) => {
-    // TODO: update the authorId here
-    input.authorId = 1
+    input.authorId = currentUser?.id
     input.slug = `${slugify(input.title)}-${input.authorId}`
     input.tagList = [...tagSet]
     create({

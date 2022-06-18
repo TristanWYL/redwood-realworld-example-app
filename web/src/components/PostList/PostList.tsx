@@ -10,7 +10,6 @@ const QUERY = gql`
     $username: String
     $favorited: Boolean
     $page: Int
-    $me: String
   ) {
     posts: articleList(
       feed: $feed
@@ -18,7 +17,6 @@ const QUERY = gql`
       username: $username
       favorited: $favorited
       page: $page
-      me: $me
     ) {
       articles {
         id
@@ -49,7 +47,6 @@ type PostListProps = {
   tag?: string
   username?: string
   favorited?: boolean
-  me?: string
 }
 const PostList = ({
   page_number = 1,
@@ -57,7 +54,6 @@ const PostList = ({
   tag,
   username,
   favorited,
-  me,
 }: PostListProps) => {
   const [page, setPage] = useState(page_number)
   const { loading, error, data } = useQuery(QUERY, {
@@ -67,7 +63,6 @@ const PostList = ({
       tag,
       username,
       favorited,
-      me,
     },
   })
 
@@ -81,12 +76,10 @@ const PostList = ({
       </div>
     )
   }
-  if (
-    !data ||
-    !data.posts ||
-    !data.posts.articles ||
-    data.posts.articles.length === 0
-  ) {
+  if (!data?.posts?.articles || data.posts.articles.length === 0) {
+    if (data.posts.articles.length === 0 && page > 1) {
+      return setPage(page - 1)
+    }
     return <div style={{ padding: '30px' }}>No posts.</div>
   }
   // console.log(data)

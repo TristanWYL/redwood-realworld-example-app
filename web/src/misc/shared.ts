@@ -25,8 +25,8 @@ export const TOGGLE_FAVORITE = gql`
   }
 `
 export const TOGGLE_FOLLOW = gql`
-  mutation changeFollow($username: String!, $me: String!, $follow: Boolean!) {
-    changeFollow(username: $username, me: $me, follow: $follow) {
+  mutation changeFollow($username: String!, $follow: Boolean!) {
+    changeFollow(username: $username, follow: $follow) {
       id
       email
       username

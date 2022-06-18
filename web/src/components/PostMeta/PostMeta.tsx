@@ -28,8 +28,8 @@ const PostMeta = ({ post }) => {
   // for working around the issue mentioned in https://github.com/TristanWYL/redwood-realworld-example-app/commit/744fb6ee37ff4121d91b49e7f86e7077f608ee36
   // useQuery is applied specifically for retrieving the 'followedByMe'
   const QUERY = gql`
-    query FollowedByMe($username: String!, $me: String!) {
-      userRelation(username: $username, me: $me) {
+    query FollowedByMe($username: String!) {
+      userRelation(username: $username) {
         id
         followedByMe
       }
@@ -42,7 +42,6 @@ const PostMeta = ({ post }) => {
   } = useQuery(QUERY, {
     variables: {
       username: post.author.username,
-      me: currentUser?.username,
     },
   })
   return (
@@ -74,7 +73,6 @@ const PostMeta = ({ post }) => {
               const response = await changeFollow({
                 variables: {
                   username: post.author.username,
-                  me: currentUser.username,
                   follow: !post.author.followedByMe,
                 },
               })

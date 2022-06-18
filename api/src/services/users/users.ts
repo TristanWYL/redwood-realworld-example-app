@@ -16,7 +16,7 @@ export const user: QueryResolvers['user'] = ({ id }) => {
   })
 }
 
-export const userRelation = ({ username, me }) => {
+export const userRelation = ({ username }) => {
   return db.user
     .findUnique({
       where: { username },
@@ -31,7 +31,11 @@ export const userRelation = ({ username, me }) => {
     })
     .then((user) => {
       if (user) {
-        user.followedByMe = user.followedBy.some((item) => item.username === me)
+        user.followedByMe = context.currentUser?.username
+          ? user.followedBy.some(
+              (item) => item.username === context.currentUser.username
+            )
+          : false
       }
       return user
     })
@@ -76,10 +80,10 @@ export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
   })
 }
 
-export const changeFollow = ({ username, me, follow }) => {
+export const changeFollow = ({ username, follow }) => {
   const optionFollowedBy = follow
-    ? { connect: { username: me } }
-    : { disconnect: { username: me } }
+    ? { connect: { username: context.currentUser.username } }
+    : { disconnect: { username: context.currentUser.username } }
   return db.user
     .update({
       where: { username },
@@ -87,8 +91,10 @@ export const changeFollow = ({ username, me, follow }) => {
       include: { followedBy: { select: { username: true } } },
     })
     .then((user) => {
-      user.followedByMe = me
-        ? user.followedBy.some((item) => item.username === me)
+      user.followedByMe = context.currentUser.username
+        ? user.followedBy.some(
+            (item) => item.username === context.currentUser.username
+          )
         : false
       return user
     })

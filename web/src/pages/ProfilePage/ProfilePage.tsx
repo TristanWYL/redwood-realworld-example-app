@@ -57,13 +57,9 @@ const ProfilePage = ({ username }: { username: string }) => {
             </div>
 
             {curTab === 'my' ? (
-              <PostList username={username} me={username}></PostList>
+              <PostList username={username}></PostList>
             ) : (
-              <PostList
-                username={username}
-                favorited={true}
-                me={username}
-              ></PostList>
+              <PostList username={username} favorited={true}></PostList>
             )}
           </div>
         </div>

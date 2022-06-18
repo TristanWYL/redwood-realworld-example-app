@@ -24,14 +24,13 @@ export const schema = gql`
   type Query {
     articles: [Article!]! @skipAuth
     article(id: Int!): Article @skipAuth
-    queryArticleBySlug(slug: String!, me: String): Article @skipAuth
+    queryArticleBySlug(slug: String!): Article @skipAuth
     articleList(
       feed: Boolean
       tag: String
       username: String
       favorited: Boolean
       page: Int
-      me: String
     ): ArticleList! @skipAuth
   }
 

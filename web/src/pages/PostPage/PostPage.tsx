@@ -3,8 +3,8 @@ import FullPost from 'src/components/FullPost/FullPost'
 import { useAuth } from '@redwoodjs/auth'
 
 const QUERY = gql`
-  query FindPostBySlug($slug: String!, $me: String) {
-    post: queryArticleBySlug(slug: $slug, me: $me) {
+  query FindPostBySlug($slug: String!) {
+    post: queryArticleBySlug(slug: $slug) {
       id
       slug
       title
@@ -30,7 +30,6 @@ const PostPage = ({ slug }) => {
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
       slug,
-      me: currentUser?.username,
     },
   })
   if (loading) {

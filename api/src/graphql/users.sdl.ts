@@ -31,7 +31,7 @@ export const schema = gql`
   type Query {
     users: [User!]! @requireAuth
     user(id: Int!): User @requireAuth
-    userRelation(username: String!, me: String!): User @skipAuth
+    userRelation(username: String!): User @skipAuth
     userInfoWithoutPrivacy(username: String!): UserWithoutPrivacy @skipAuth
   }
 
@@ -55,7 +55,6 @@ export const schema = gql`
     createUser(input: CreateUserInput!): User! @skipAuth
     updateUser(id: Int!, input: UpdateUserInput!): User! @requireAuth
     deleteUser(id: Int!): User! @requireAuth
-    changeFollow(username: String!, me: String!, follow: Boolean!): User!
-      @requireAuth
+    changeFollow(username: String!, follow: Boolean!): User! @requireAuth
   }
 `

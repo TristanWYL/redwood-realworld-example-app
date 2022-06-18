@@ -15,7 +15,7 @@ export const article: QueryResolvers['article'] = ({ id }) => {
   })
 }
 
-export const queryArticleBySlug = ({ slug, me }) => {
+export const queryArticleBySlug = ({ slug }) => {
   return db.article
     .findUnique({
       where: { slug },
@@ -40,11 +40,15 @@ export const queryArticleBySlug = ({ slug, me }) => {
     .then((result) => {
       if (result) {
         result.favoriteCount = result._count.favoritedBy
-        result.favoritedByMe = me
-          ? result.favoritedBy.some((item) => item.username === me)
+        result.favoritedByMe = context.currentUser?.username
+          ? result.favoritedBy.some(
+              (item) => item.username === context.currentUser.username
+            )
           : false
-        result.author.followedByMe = me
-          ? result.author.followedBy.some((item) => item.username === me)
+        result.author.followedByMe = context.currentUser?.username
+          ? result.author.followedBy.some(
+              (item) => item.username === context.currentUser.username
+            )
           : false
       }
       // console.log(result)
@@ -62,9 +66,6 @@ const PAGE_SIZE = 5
  *    the favorite posts should be returned.
  *    When used with feed equal to 'true', username means this query should
  *    return those articles of which the author is followed by 'username'
- * @param me
- *    Will be used to check whether each returned article is favorited by 'me'.
- *    Here 'me' represents the 'username' of User
  */
 export const articleList = async ({
   feed,
@@ -72,7 +73,6 @@ export const articleList = async ({
   username,
   favorited,
   page = 1,
-  me,
 }) => {
   const option = { orderBy: { id: 'desc' }, where: {} }
   if (tag) {
@@ -120,9 +120,11 @@ export const articleList = async ({
   articles.forEach((a) => {
     a.favoriteCount = a._count.favoritedBy
   })
-  if (me) {
+  if (context.currentUser?.username) {
     articles.forEach((a) => {
-      a.favoritedByMe = a.favoritedBy?.some((item) => item.username === me)
+      a.favoritedByMe = a.favoritedBy?.some(
+        (item) => item.username === context.currentUser.username
+      )
     })
   }
   // console.log(articles)

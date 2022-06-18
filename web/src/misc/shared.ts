@@ -36,3 +36,11 @@ export const TOGGLE_FOLLOW = gql`
     }
   }
 `
+export const DELETE_ARTICLE = gql`
+  mutation deleteArticle($id: Int!) {
+    deleteArticle(id: $id) {
+      id
+      slug
+    }
+  }
+`

@@ -22,7 +22,7 @@ const CREATE_ARTICLE = gql`
   }
 `
 
-const EditorPage = () => {
+const EditorPage = ({ slug }) => {
   const formMethods = useForm()
   const { currentUser } = useAuth()
   const [tagSet, setTagSet] = useState(new Set())

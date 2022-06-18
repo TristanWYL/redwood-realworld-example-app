@@ -23,7 +23,8 @@ const Routes = () => {
       </Set>
       <Private unauthenticated="home">
         <Set wrap={MainLayout}>
-          <Route path="/editor" page={EditorPage} name="editor" />
+          <Route path="/editor" page={EditorPage} name="createArticle" />
+          <Route path="/editor/{slug:String}" page={EditorPage} name="tweakArticle" />
           <Route path="/settings" page={SettingPage} name="settings" />
         </Set>
       </Private>

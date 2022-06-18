@@ -37,7 +37,7 @@ const Header = () => {
                   className={
                     (curLink === 'editor' ? 'active' : '') + ' nav-link'
                   }
-                  to={routes.editor()}
+                  to={routes.createArticle()}
                 >
                   <i className="ion-compose"></i>&nbsp;New Article
                 </Link>

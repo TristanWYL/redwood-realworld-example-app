@@ -159,6 +159,9 @@ export const updateArticle: MutationResolvers['updateArticle'] = ({
 }
 
 export const deleteArticle: MutationResolvers['deleteArticle'] = ({ id }) => {
+  // can only delete the user's own article
+  // so check the identity first
+  // TODO: check the identity before deleting
   return db.article.delete({
     where: { id },
   })

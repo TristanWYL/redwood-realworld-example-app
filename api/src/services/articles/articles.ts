@@ -4,6 +4,8 @@ import type {
   MutationResolvers,
   ArticleResolvers,
 } from 'types/graphql'
+import slugify from 'slugify'
+import { EmailValidationError } from '@redwoodjs/api'
 
 export const articles: QueryResolvers['articles'] = () => {
   return db.article.findMany()
@@ -137,6 +139,7 @@ export const articleList = async ({
 export const createArticle: MutationResolvers['createArticle'] = ({
   input,
 }) => {
+  input.slug = `${slugify(input.title)}-${input.authorId}`
   input.tagList = {
     connectOrCreate: input.tagList.map((tag: string) => ({
       create: { name: tag },
@@ -148,13 +151,40 @@ export const createArticle: MutationResolvers['createArticle'] = ({
   })
 }
 
-export const updateArticle: MutationResolvers['updateArticle'] = ({
+export const updateArticle: MutationResolvers['updateArticle'] = async ({
   id,
   input,
 }) => {
-  return db.article.update({
-    data: input,
+  const newSlug = `${slugify(input.title)}-${input.authorId}`
+  const existingTitle = await db.article.findFirst({
+    where: {
+      slug: newSlug,
+      NOT: {
+        id: {
+          equals: id,
+        },
+      },
+    },
+  })
+  if (existingTitle) {
+    throw new EmailValidationError('title', 'Title must be unique.')
+  }
+
+  // disconnectArticlesTags
+  await db.article.update({
     where: { id },
+    data: { tagList: { set: [] } },
+  })
+
+  input.tagList = {
+    connectOrCreate: input.tagList.map((tag: string) => ({
+      create: { name: tag },
+      where: { name: tag },
+    })),
+  }
+  return db.article.update({
+    where: { id },
+    data: input,
   })
 }
 

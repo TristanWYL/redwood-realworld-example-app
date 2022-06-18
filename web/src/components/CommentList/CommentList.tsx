@@ -34,7 +34,7 @@ const CommentList = ({ articleId }) => {
       </div>
     )
   }
-  console.log(data)
+  // console.log(data)
   if (!data || !data.comments || data.comments.length === 0) {
     return <div style={{ padding: '30px' }}>No comments.</div>
   }

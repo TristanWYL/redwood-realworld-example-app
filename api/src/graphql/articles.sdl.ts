@@ -49,6 +49,7 @@ export const schema = gql`
     description: String
     body: String
     authorId: Int
+    tagList: [String]
   }
 
   type Mutation {

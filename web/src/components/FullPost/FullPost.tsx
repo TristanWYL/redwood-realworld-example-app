@@ -1,8 +1,12 @@
 import CommentList from '../CommentList/CommentList'
 import CommentSubmitBox from '../CommentSubmitBox/CommentSubmitBox'
 import PostMeta from '../PostMeta/PostMeta'
+import ReactMarkdown from 'react-markdown'
+import { useAuth } from '@redwoodjs/auth'
+import { Link, routes } from '@redwoodjs/router'
 
 const FullPost = ({ post }) => {
+  const { isAuthenticated } = useAuth()
   return (
     <div className="article-page">
       <div className="banner">
@@ -20,7 +24,7 @@ const FullPost = ({ post }) => {
               over the past few years.
             </p>
             <h2 id="introducing-ionic">Introducing RealWorld.</h2> */}
-            <p>{post.body}</p>
+            <ReactMarkdown>{post.body}</ReactMarkdown>
             {post.tagList.length > 0 && (
               <ul className="tag-list">
                 {post.tagList.map((tag) => (

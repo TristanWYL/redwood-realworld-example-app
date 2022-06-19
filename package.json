@@ -24,6 +24,7 @@
   "packageManager": "yarn@3.2.0",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
+    "react-markdown": "^8.0.3",
     "react-redux": "^8.0.1",
     "slugify": "^1.6.5"
   }

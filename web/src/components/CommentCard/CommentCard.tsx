@@ -1,4 +1,4 @@
-import { dateFormat } from '../../../utils'
+import { dateFormat } from '../../misc/utils'
 
 // type CommentCardProps = {
 //   comment: {

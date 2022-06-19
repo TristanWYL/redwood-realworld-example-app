@@ -1,5 +1,5 @@
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { dateFormat } from '../../../utils'
+import { dateFormat } from '../../misc/utils'
 import { useAuth } from '@redwoodjs/auth'
 import { useMutation } from '@redwoodjs/web'
 import { TOGGLE_FAVORITE } from 'src/misc/shared'

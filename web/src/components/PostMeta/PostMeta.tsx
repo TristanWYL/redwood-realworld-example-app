@@ -169,7 +169,7 @@ const FollowButton = ({ loading, followedByMe, onClick, username }) => {
       onClick={onClick}
     >
       <i className="ion-plus-round"></i>
-      &nbsp; {(followedByMe ? 'Unfollow' : 'Follow') + username}{' '}
+      &nbsp; {(followedByMe ? 'Unfollow ' : 'Follow ') + username}{' '}
       {/* <span className="counter">(10)</span> */}
     </button>
   )

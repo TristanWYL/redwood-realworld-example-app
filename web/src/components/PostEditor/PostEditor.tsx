@@ -8,7 +8,7 @@ import {
   useForm,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
 import { useState } from 'react'
 import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes } from '@redwoodjs/router'
@@ -53,10 +53,8 @@ const PostEditor = ({ post }) => {
       },
     })
   const onSubmit = (input) => {
-    console.log(1, input)
     input.authorId = currentUser?.id
     input.tagList = [...tagSet]
-    console.log(2, input)
     if (post) {
       update({ variables: { id: post.id, input } })
     } else {
@@ -70,13 +68,12 @@ const PostEditor = ({ post }) => {
       <div className="container page">
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
-            <Toaster />
             <Form
               onSubmit={onSubmit}
               formMethods={formMethods}
               error={errorForCreate || errorForUpdate}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && e.target.type !== 'textarea') {
                   e.preventDefault()
                 }
               }}

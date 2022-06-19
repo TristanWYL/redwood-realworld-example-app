@@ -1,6 +1,7 @@
 import { useQuery } from '@redwoodjs/web'
 import FullPost from 'src/components/FullPost/FullPost'
 import { useAuth } from '@redwoodjs/auth'
+import { navigate, routes } from '@redwoodjs/router'
 
 const QUERY = gql`
   query FindPostBySlug($slug: String!) {
@@ -41,6 +42,9 @@ const PostPage = ({ slug }) => {
         Error: {error.message}
       </div>
     )
+  }
+  if (!data.post) {
+    navigate(routes.home())
   }
   return <FullPost post={data.post} />
 }

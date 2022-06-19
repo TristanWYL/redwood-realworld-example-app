@@ -17,9 +17,9 @@ const Header = () => {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <a className="navbar-brand" href="index.html">
+        <Link className="navbar-brand" to={routes.home()}>
           conduit
-        </a>
+        </Link>
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
             {/* Add "active" className when you're on that page" */}

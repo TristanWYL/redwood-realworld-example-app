@@ -11,7 +11,7 @@ const FullPost = ({ post }) => {
     <div className="article-page">
       <div className="banner">
         <div className="container">
-          <h1>{post.title}</h1>
+          <h1>{post?.title}</h1>
           <PostMeta post={post} />
         </div>
       </div>
@@ -24,10 +24,10 @@ const FullPost = ({ post }) => {
               over the past few years.
             </p>
             <h2 id="introducing-ionic">Introducing RealWorld.</h2> */}
-            <ReactMarkdown>{post.body}</ReactMarkdown>
-            {post.tagList.length > 0 && (
+            <ReactMarkdown>{post?.body}</ReactMarkdown>
+            {post?.tagList?.length > 0 && (
               <ul className="tag-list">
-                {post.tagList.map((tag) => (
+                {post?.tagList?.map((tag) => (
                   <li
                     className="tag-default tag-pill tag-outline"
                     key={tag.name}
@@ -57,7 +57,7 @@ const FullPost = ({ post }) => {
                 {' to add comments on this article.'}
               </p>
             )}
-            <CommentList articleId={post.id} />
+            <CommentList articleId={post?.id} />
           </div>
         </div>
       </div>

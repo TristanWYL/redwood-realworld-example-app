@@ -25,12 +25,23 @@ yarn redwood dev
 
 Your browser should automatically open to http://localhost:8910.
 
+
+# ToDo
+
+- [ ] finish the unit/integration test
+- [ ] fix the [potential issues](#potential-issues-to-be-fixed)
+
+
 # Potential issues to be fixed
 
 - [ ] query for user(s) is marked as @requireAuth which means only authenticated users can access the query. However, what if an authenticated user queries other users' personal info? Is this possible?
 - [ ] When clicking on any 'favorite' button, it's supposed that only one http request is sent. However, the application sends four http requests. Some requests seem unnecessary.
 - [ ] At the home page, when shrinking the width, the UI does not work as demanded.
 - [ ] In a [commit](https://github.com/TristanWYL/redwood-realworld-example-app/commit/744fb6ee37ff4121d91b49e7f86e7077f608ee36), the GraphQL operation 'queryArticleBySlug' always gets a field 'followedByMe' as null.
+
+<!-- # Issues about redwoodjs
+
+- [ ] When running `const { isAuthenticated, currentUser } = useAuth()`, sometimes `isAuthenticated` is `true`, while `currentUser` is `undefined`. **Seems only happen when the backend service is down** -->
 
 # About Redwood
 

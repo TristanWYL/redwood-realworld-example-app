@@ -47,7 +47,16 @@ const FullPost = ({ post }) => {
         </div>
         <div className="row">
           <div className="col-xs-12 col-md-8 offset-md-2">
-            <CommentSubmitBox article={post} />
+            {isAuthenticated ? (
+              <CommentSubmitBox article={post} />
+            ) : (
+              <p style={{ display: 'inherit' }}>
+                <Link to={routes.login()}>Sign in</Link>
+                {' or '}
+                <Link to={routes.register()}>Sign up</Link>
+                {' to add comments on this article.'}
+              </p>
+            )}
             <CommentList articleId={post.id} />
           </div>
         </div>

@@ -11,21 +11,19 @@ export const schema = gql`
   }
 
   type Query {
-    comments: [Comment!]! @requireAuth
-    getCommentsByArticleId(articleId: Int!): [Comment!]! @requireAuth
+    comments: [Comment!]! @skipAuth
+    getCommentsByArticleId(articleId: Int!): [Comment!]! @skipAuth
     comment(id: Int!): Comment @requireAuth
   }
 
   input CreateCommentInput {
     body: String!
     articleId: Int!
-    authorId: Int!
   }
 
   input UpdateCommentInput {
     body: String
     articleId: Int
-    authorId: Int
   }
 
   type Mutation {

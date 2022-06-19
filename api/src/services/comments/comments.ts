@@ -29,6 +29,7 @@ export const comment: QueryResolvers['comment'] = ({ id }) => {
 export const createComment: MutationResolvers['createComment'] = ({
   input,
 }) => {
+  input.authorId = context.currentUser.id
   return db.comment.create({
     data: input,
   })

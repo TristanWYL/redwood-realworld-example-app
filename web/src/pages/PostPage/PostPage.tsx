@@ -45,6 +45,7 @@ const PostPage = ({ slug }) => {
   }
   if (!data.post) {
     navigate(routes.home())
+    return <></>
   }
   return <FullPost post={data.post} />
 }

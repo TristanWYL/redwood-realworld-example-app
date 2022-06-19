@@ -7,7 +7,7 @@ import { toast } from '@redwoodjs/web/toast'
 
 const PostMeta = ({ post }) => {
   const { isAuthenticated, currentUser } = useAuth()
-  const isPostMine = post?.author.username === currentUser?.username
+  const isPostMine = post.author.username === currentUser?.username
   const [changeFavorite, { loading: loadingWhenUpdateFavorite }] = useMutation(
     TOGGLE_FAVORITE,
     {
@@ -45,8 +45,8 @@ const PostMeta = ({ post }) => {
         const response = await changeFavorite({
           variables: {
             username: currentUser.username,
-            slug: post?.slug,
-            favorite: !post?.favoritedByMe,
+            slug: post.slug,
+            favorite: !post.favoritedByMe,
           },
         })
         // article = response.data.changeFavorite
@@ -62,7 +62,7 @@ const PostMeta = ({ post }) => {
         // [un]favorite
         const response = await changeFollow({
           variables: {
-            username: post?.author.username,
+            username: post.author.username,
             follow: !queryFollowedByMeResult?.userRelation?.followedByMe,
           },
         })
@@ -74,11 +74,11 @@ const PostMeta = ({ post }) => {
   }
 
   const onClickDeleteArticleButton = () => {
-    deleteArticle({ variables: { id: post?.id } })
+    deleteArticle({ variables: { id: post.id } })
   }
 
   const onClickEditArticleButton = () => {
-    navigate(routes.tweakArticle({ slug: post?.slug }))
+    navigate(routes.tweakArticle({ slug: post.slug }))
   }
 
   // for working around the issue mentioned in https://github.com/TristanWYL/redwood-realworld-example-app/commit/744fb6ee37ff4121d91b49e7f86e7077f608ee36
@@ -93,22 +93,22 @@ const PostMeta = ({ post }) => {
   `
   const { data: queryFollowedByMeResult } = useQuery(QUERY, {
     variables: {
-      username: post?.author.username,
+      username: post.author.username,
     },
   })
   return (
     <div className="article-meta">
-      <Link to={routes.profile({ username: post?.author.username ?? '' })}>
-        <img src={post?.author.image} alt="avatar" />
+      <Link to={routes.profile({ username: post.author.username })}>
+        <img src={post.author.image} alt="avatar" />
       </Link>
       <div className="info">
         <Link
-          to={routes.profile({ username: post?.author.username ?? '' })}
+          to={routes.profile({ username: post.author.username })}
           className="author"
         >
-          {post?.author.username}
+          {post.author.username}
         </Link>
-        <span className="date">{dateFormat(post?.updatedAt)}</span>
+        <span className="date">{dateFormat(post.updatedAt)}</span>
       </div>
 
       {isPostMine ? (
@@ -126,13 +126,13 @@ const PostMeta = ({ post }) => {
             loading={loadingWhenUpdateFollow}
             followedByMe={queryFollowedByMeResult?.userRelation?.followedByMe}
             onClick={onClickFollowButton}
-            username={post?.author.username}
+            username={post.author.username}
           />
           &nbsp;&nbsp;
           <FavoriteButton
             loading={loadingWhenUpdateFavorite}
-            favoritedByMe={post?.favoritedByMe}
-            favoriteCount={post?.favoriteCount}
+            favoritedByMe={post.favoritedByMe}
+            favoriteCount={post.favoriteCount}
             onClick={onClickFavoriteButton}
           />
         </>

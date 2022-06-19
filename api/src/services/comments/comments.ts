@@ -14,9 +14,9 @@ export const getCommentsByArticleId = ({
 }: {
   articleId: number
 }) => {
-  console.log(articleId)
   return db.comment.findMany({
     where: { articleId },
+    orderBy: { id: 'desc' },
   })
 }
 

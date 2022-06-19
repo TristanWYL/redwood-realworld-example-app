@@ -4,9 +4,15 @@ import PostMeta from '../PostMeta/PostMeta'
 import ReactMarkdown from 'react-markdown'
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
+import { useState } from 'react'
+import { CommentContextProvider } from 'src/misc/CommentContextProvider'
 
 const FullPost = ({ post }) => {
   const { isAuthenticated } = useAuth()
+  // const [_, setState] = useState(0)
+  // const refresh = () => {
+  //   setState((state) => state + 1)
+  // }
   return (
     <div className="article-page">
       <div className="banner">
@@ -46,19 +52,21 @@ const FullPost = ({ post }) => {
           <PostMeta post={post} />
         </div>
         <div className="row">
-          <div className="col-xs-12 col-md-8 offset-md-2">
-            {isAuthenticated ? (
-              <CommentSubmitBox article={post} />
-            ) : (
-              <p style={{ display: 'inherit' }}>
-                <Link to={routes.login()}>Sign in</Link>
-                {' or '}
-                <Link to={routes.register()}>Sign up</Link>
-                {' to add comments on this article.'}
-              </p>
-            )}
-            <CommentList articleId={post?.id} />
-          </div>
+          <CommentContextProvider>
+            <div className="col-xs-12 col-md-8 offset-md-2">
+              {isAuthenticated ? (
+                <CommentSubmitBox article={post} />
+              ) : (
+                <p style={{ display: 'inherit' }}>
+                  <Link to={routes.login()}>Sign in</Link>
+                  {' or '}
+                  <Link to={routes.register()}>Sign up</Link>
+                  {' to add comments on this article.'}
+                </p>
+              )}
+              <CommentList articleId={post?.id} />
+            </div>
+          </CommentContextProvider>
         </div>
       </div>
     </div>

@@ -1,4 +1,6 @@
 import { useQuery } from '@redwoodjs/web'
+import { useContext, useEffect } from 'react'
+import { CommentContext } from 'src/misc/CommentContextProvider'
 import CommentCard from '../CommentCard/CommentCard'
 
 const QUERY = gql`
@@ -19,11 +21,19 @@ const QUERY = gql`
 `
 
 const CommentList = ({ articleId }) => {
-  const { loading, error, data } = useQuery(QUERY, {
+  const { update } = useContext(CommentContext)
+  const { loading, error, data, refetch } = useQuery(QUERY, {
     variables: {
       articleId,
     },
   })
+  useEffect(() => {
+    update({
+      refetch: () => {
+        refetch()
+      },
+    })
+  }, [])
   if (loading) {
     return <div style={{ padding: '30px' }}>Loading comments ...</div>
   }

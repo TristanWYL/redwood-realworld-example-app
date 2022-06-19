@@ -8,6 +8,8 @@ import {
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { useAuth } from '@redwoodjs/auth'
+import { useContext } from 'react'
+import { CommentContext } from 'src/misc/CommentContextProvider'
 
 const CREATE_COMMENT = gql`
   mutation CreateCommentMutation($input: CreateCommentInput!) {
@@ -19,10 +21,12 @@ const CREATE_COMMENT = gql`
 const CommentSubmitBox = ({ article }) => {
   const formMethods = useForm()
   const { currentUser } = useAuth()
+  const { refetch } = useContext(CommentContext)
   const [create, { loading, error }] = useMutation(CREATE_COMMENT, {
     onCompleted: () => {
       toast.success('Thank you for your comment!')
       formMethods.reset()
+      refetch()
     },
   })
   return (
